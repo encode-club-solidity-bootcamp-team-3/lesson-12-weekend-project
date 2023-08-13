@@ -27,7 +27,7 @@ async function main() {
   // transfer from deployer to input account
   const transferTx = await tokenContract.connect(signer).transfer(addressTo, TX_VALUE);
   await transferTx.wait();
-  console.log(`Transfered ${TX_VALUE.toString()} decimal units to account ${addressTo}.\n`);
+  console.log(`Transfered ${TX_VALUE.toString()} to ${addressTo}.\n`);
   
   const balanceBN = await tokenContract.balanceOf(signer.address);  
   console.log(`Account ${signer.address} has ${balanceBN.toString()} VTK.\n`);
