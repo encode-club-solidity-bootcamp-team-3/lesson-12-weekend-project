@@ -35,7 +35,3 @@ async function main() {
     console.log(`Wallet balance ${balance}.`);
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
