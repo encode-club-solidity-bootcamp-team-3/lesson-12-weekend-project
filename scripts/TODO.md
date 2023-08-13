@@ -1,0 +1,10 @@
+- complete TokenizedBallot
+- 1 setup token
+- 2 delegate votes
+- 3 send tokens
+- 4 everyone founded
+- 5 deploy TokenizedBallot passing token address 1 and target
+- 6 script vote
+- + script transfer to who
+- + script winner
+- 7 report code + table of tx
