@@ -14,12 +14,16 @@ async function main() {
   // proposal index is the first argument in the command line 
   const proposal_id = process.argv[2];
   // the voting power to spend is the second argument in the command line  
-  const amount = parseFloat(process.argv[3]);
-  
-  if (amount < 0) {
-    throw new Error("Negative vote is not possible.")
+  const amountInDecimal = parseFloat(process.argv[3]);
+
+  if (isNaN(amountInDecimal) || amountInDecimal < 0) {
+    throw new Error("Invalid or negative vote amount");
   }
   
+  // Convert the decimal vote amount into base units of the token
+  const tokenDecimals = 18; // Assuming the token has 18 decimals
+  const amount = ethers.parseUnits(amountInDecimal.toString(), tokenDecimals);
+
   const provider = setupProvider();
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY ?? "", provider);
   const signer = wallet.connect(provider);
@@ -27,7 +31,7 @@ async function main() {
   const balance = Number(ethers.formatUnits(balanceBN));
   console.log(`\nWallet balance ${balance}`);
   if (balance < 0.01) {
-    throw new Error("Not enough ether")
+    throw new Error("Not enough ether");
   }
 
   const ballotContract = new ethers.Contract(ballot_contract_address, BallotJSON.abi, signer);
@@ -40,8 +44,7 @@ async function main() {
   console.log(`Wallet balance ${balance}\n`);
 }
 
-
 main().catch((error) => {
     console.error(error);
     process.exitCode = 1;
-  });
+});
