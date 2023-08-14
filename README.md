@@ -123,3 +123,13 @@ This is a group activity for at least 3 students:
 - Account 0x1121A584c4CdB01753F030e0b50FAC9475b503DD 0n
 - Account 0x1d4beb1fCd58F36243c2A1dEafEfCa15bCEA4819 0n
 - Account 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E 0n
+
+9. Added script `09-self-delegate` to self delegate:
+Log:
+```shell
+0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E has 200000000000000000 decimals units of MyToken
+0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E has 0 units of voting power
+Self delegating...
+0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E has 200000000000000000 decimals units of MyToken
+0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E has 200000000000000000 units of voting power
+```
