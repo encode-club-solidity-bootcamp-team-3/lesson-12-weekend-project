@@ -1,6 +1,7 @@
 import { ethers } from "ethers";
 import * as BallotJSON from "../artifacts/contracts/TokenizedBallot.sol/TokenizedBallot.json";
 import * as dotenv from "dotenv";
+import { TokenizedBallot__factory } from "../typechain-types";
 dotenv.config();
 
 function setupProvider() {
@@ -28,30 +29,28 @@ async function main() {
 
   const provider = setupProvider();
   const wallet = new ethers.Wallet(process.env.PRIVATE_KEY ?? "", provider);
-  const signer = wallet.connect(provider);
-  const balanceBN = await provider.getBalance(wallet.address);
-  const balance = Number(ethers.formatUnits(balanceBN));
-  console.log(`\nWallet balance ${balance}`);
-  if (balance < 0.01) {
-    throw new Error("Not enough ether");
-  }
 
-  const ballotContract = new ethers.Contract(
+  const ballotContract = TokenizedBallot__factory.connect(
     ballot_contract_address,
-    BallotJSON.abi,
-    signer
+    wallet
+  );
+
+  // control voting power before voting
+  const votingPower = await ballotContract.votingPower(wallet.address);
+  console.log(
+    `voter account ${wallet.address} has this current voting power ${votingPower}`
+  );
+  console.log(
+    `voter account ${wallet.address} is willing to vote with this amount ${amount}`
   );
 
   // call the Solidity's vote function
-  await ballotContract.vote(proposal_id, amount);
-
+  const voteTx = await ballotContract.vote(proposal_id, amount);
+  await voteTx.wait();
+  console.log({ voteTx });
+  
   const proposal_voted = await ballotContract.proposals(proposal_id);
-  console.log(
-    `\nUpdated total vote for ${
-      proposal_voted.name
-    } = ${await proposal_voted.voteCount}.`
-  );
-  console.log(`Wallet balance ${balance}\n`);
+  console.log(`Updated total vote for ${proposal_voted.name} = ${proposal_voted.voteCount}.`);
 }
 
 main().catch((error) => {

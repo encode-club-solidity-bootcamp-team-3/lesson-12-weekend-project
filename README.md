@@ -1,81 +1,5 @@
 # Lesson 12 - Tokenized Votes
 
-## The ERC20Votes ERC20 extension
-
-* ERC20Votes properties
-* Snapshots
-* Creating snapshots when supply changes
-* Using snapshots
-* Self delegation
-* Contract overall operation
-
-### References
-<https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Votes>
-
-<https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Snapshot>
-
-<https://docs.openzeppelin.com/contracts/4.x/api/token/erc20#ERC20Permit>
-
-    // SPDX-License-Identifier: MIT
-    pragma solidity >=0.7.0 <0.9.0;
-    
-    import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-    import "@openzeppelin/contracts/access/AccessControl.sol";
-    import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
-    import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
-    
-    contract MyToken is ERC20, AccessControl, ERC20Permit, ERC20Votes {
-        bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
-    
-        constructor() ERC20("MyToken", "MTK") ERC20Permit("MyToken") {
-            _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-            _grantRole(MINTER_ROLE, msg.sender);
-        }
-    
-        function mint(address to, uint256 amount) public onlyRole(MINTER_ROLE) {
-            _mint(to, amount);
-        }
-    
-        // The following functions are overrides required by Solidity.
-    
-        function _afterTokenTransfer(address from, address to, uint256 amount)
-            internal
-            override(ERC20, ERC20Votes)
-        {
-            super._afterTokenTransfer(from, to, amount);
-        }
-    
-        function _mint(address to, uint256 amount)
-            internal
-            override(ERC20, ERC20Votes)
-        {
-            super._mint(to, amount);
-        }
-    
-        function _burn(address account, uint256 amount)
-            internal
-            override(ERC20, ERC20Votes)
-        {
-            super._burn(account, amount);
-        }
-    }
-
-## ERC20Votes and Ballot.sol
-
-* (Review) Testing features with scripts
-* Mapping scenarios
-* Contracts structure
-* Using snapshots to account for vote power in ballot
-
----
-
-## Homework
-
-* Create Github Issues with your questions about this lesson
-* Read the references
-
----
-
 ## Weekend Project
 
 This is a group activity for at least 3 students:
@@ -141,10 +65,33 @@ for args tokenizedBallotContract = 0x83611D5d1E4efc8c74B86090aA9CD304889d854a an
 so i deployed a new tokenizedBallotContract with same proposals "monday best day", "friday best day" and "sunday best day", contract address = 0x4F52314A732A294647745B867c043b4E9c3c2426
 
 12. I execute again the script `10-check-voting-power` to check voting power
-for args tokenizedBallotContract = 0x4F52314A732A294647745B867c043b4E9c3c2426 and wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E it returns 200000000000000000n 🎊
+for args tokenizedBallotContract = 0x4F52314A732A294647745B867c043b4E9c3c2426 and wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E it returns 200000000000000000n ✅
 
 13. I add the script `11-check-past-votes` to check past votes
-for args tokenContract = 0x208F75C3A395Ad125D0D641D9a2648F837a58538, tokenizedBallotContract = 0x4F52314A732A294647745B867c043b4E9c3c2426 and wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E it returns 200000000000000000n 🎊
+for args tokenContract = 0x208F75C3A395Ad125D0D641D9a2648F837a58538, tokenizedBallotContract = 0x4F52314A732A294647745B867c043b4E9c3c2426 and wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E it returns 200000000000000000n ✅
 
-14. I try to vote executing script `05-vote` with wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E but it generates this error:
-Error: execution reverted: "TokenizedBallot: trying to vote more than allowed" ❌
+14. I try to vote executing script `05-vote` with wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E with 1 tokens and it generates this error: "TokenizedBallot: trying to vote more than allowed"
+✅ this error expected because i tried to vote with 1 token, but my voting power is 0.2 token
+
+15. I try to vote again executing script `05-vote` with wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E with 0.1 tokens and it works ✅
+tx = https://sepolia.etherscan.io/tx/0x145281601d52e7b61cc46602cd1d8b0366d4a6c38b30e530874d67ed8cbd0b1f
+
+16. I check my voting power spend, it now says 0.1 tokens
+yarn run ts-node --files scripts/07-check-voting-power-spent.ts 0x4F52314A732A294647745B867c043b4E9c3c2426 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E
+100000000000000000n ✅
+
+17. I vote again with 0.1 tokens and it works ✅
+https://sepolia.etherscan.io/tx/0x9f30119ea64cadc82740b5d4bcfd0d2f951c625e195d0a212e6317bd14e68cb7
+
+18. I vote again with 0.1 tokens and it fails as expected since i spent all my voting power ✅
+
+19. I check the winning proposal, it is friday best day with 0.2 votes ✅
+`yarn run ts-node --files scripts/12-check-winning-proposals.ts 0x4F52314A732A294647745B867c043b4E9c3c2426`
+
+20. I check my vote balance, it should now be 200000000000000000n
+`yarn run ts-node --files scripts/08-check-vote-balance.ts 0x208F75C3A395Ad125D0D641D9a2648F837a58538 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E`
+200000000000000000n ✅
+
+21. I check my voting power, it should now be 0
+`yarn run ts-node --files scripts/10-check-voting-power.ts 0x4F52314A732A294647745B867c043b4E9c3c2426 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E`
+0n ✅

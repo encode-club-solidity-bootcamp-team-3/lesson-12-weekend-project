@@ -18,7 +18,7 @@ async function main() {
 
   const tokenizedBallotContract = TokenizedBallot__factory.connect(contractAddress, provider);
 
-  const votingPowerSpent = await tokenizedBallotContract.votingPower(accountAddress);
+  const votingPower = await tokenizedBallotContract.votingPower(accountAddress);
 
-  console.log(votingPowerSpent);
+  console.log(votingPower);
 }
