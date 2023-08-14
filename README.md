@@ -113,3 +113,13 @@ This is a group activity for at least 3 students:
 6. Added script `06-check-my-token-balance.ts` to check the token balance of an account:
 - Account 0x1121A584c4CdB01753F030e0b50FAC9475b503DD has 600000000000000000 units of VTK.
 - Account 0x1d4beb1fCd58F36243c2A1dEafEfCa15bCEA4819 has 200000000000000000 units of VTK.
+
+7. Added script `07-check-voting-power-spent` to check the voting power spent of an account:
+- Account 0x1121A584c4CdB01753F030e0b50FAC9475b503DD 0n
+- Account 0x1d4beb1fCd58F36243c2A1dEafEfCa15bCEA4819 0n
+- Account 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E 0n
+
+8. Added script `08-check-vote-balance` to check the vote balance of an account:
+- Account 0x1121A584c4CdB01753F030e0b50FAC9475b503DD 0n
+- Account 0x1d4beb1fCd58F36243c2A1dEafEfCa15bCEA4819 0n
+- Account 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E 0n
