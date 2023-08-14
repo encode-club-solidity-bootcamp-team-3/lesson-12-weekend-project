@@ -10,7 +10,7 @@ try {
   process.exitCode = 1;
 }
 
-const mint_amount = ethers.parseUnits("1");
+const MINT_VALUE = ethers.parseUnits("1");
 
 function setupProvider(){
   const provider = new ethers.JsonRpcProvider(process.env.RPC_ENDPOINT_URL ?? "");
@@ -29,7 +29,7 @@ async function main() {
   // Mint some tokens
   const mintTx = await tokenContract.mint(signer.address, MINT_VALUE);
   await mintTx.wait();
-  console.log(`Minted ${mint_amount.toString()} to ${signer.address}.\n`);
+  console.log(`Minted ${MINT_VALUE.toString()} to ${signer.address}.\n`);
   const balanceBN = await tokenContract.balanceOf(signer.address);  
   console.log(`Account ${signer.address} has ${balanceBN.toString()} units of VTK.\n`);
 }

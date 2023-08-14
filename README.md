@@ -110,4 +110,6 @@ This is a group activity for at least 3 students:
 > Transaction: https://sepolia.etherscan.io/tx/0xb3a37656377d44f13447d4e06d53a86e525091d843ccf42f81dbedc157209cb0
 > Transaction: https://sepolia.etherscan.io/tx/0xcdea623544fefa058eeaa856f365e8a536ffc1926a3ebf49d09cc3eaaf5c57c9
 
-6. 
+6. Added script `06-check-my-token-balance.ts` to check the token balance of an account:
+- Account 0x1121A584c4CdB01753F030e0b50FAC9475b503DD has 600000000000000000 units of VTK.
+- Account 0x1d4beb1fCd58F36243c2A1dEafEfCa15bCEA4819 has 200000000000000000 units of VTK.

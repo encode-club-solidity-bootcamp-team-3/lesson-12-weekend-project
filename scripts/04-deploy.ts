@@ -38,7 +38,9 @@ async function main() {
     }
     const ballotFactory = new TokenizedBallot__factory(wallet);
     const ballotContract = await ballotFactory.deploy(
-        proposals.map(ethers.encodeBytes32String), TKNaddress, targetBlockNum
+      TKNaddress,
+      targetBlockNum,
+      proposals.map(ethers.encodeBytes32String)
     );
     await ballotContract.waitForDeployment();
     const address = await ballotContract.getAddress();
