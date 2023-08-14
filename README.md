@@ -133,3 +133,18 @@ Self delegating...
 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E has 200000000000000000 decimals units of MyToken
 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E has 200000000000000000 units of voting power
 ```
+
+10. Added script `10-check-voting-power` to check voting power
+for args tokenizedBallotContract = 0x83611D5d1E4efc8c74B86090aA9CD304889d854a and wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E it returns 0n ❌
+
+11. I think it's because we need to deploy tokenizedBallotContract after the self delegation
+so i deployed a new tokenizedBallotContract with same proposals "monday best day", "friday best day" and "sunday best day", contract address = 0x4F52314A732A294647745B867c043b4E9c3c2426
+
+12. I execute again the script `10-check-voting-power` to check voting power
+for args tokenizedBallotContract = 0x4F52314A732A294647745B867c043b4E9c3c2426 and wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E it returns 200000000000000000n 🎊
+
+13. I add the script `11-check-past-votes` to check past votes
+for args tokenContract = 0x208F75C3A395Ad125D0D641D9a2648F837a58538, tokenizedBallotContract = 0x4F52314A732A294647745B867c043b4E9c3c2426 and wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E it returns 200000000000000000n 🎊
+
+14. I try to vote executing script `05-vote` with wallet 0x4275ABc88C150d1ce20817BE7B594dfeB6A9d70E but it generates this error:
+Error: execution reverted: "TokenizedBallot: trying to vote more than allowed" ❌

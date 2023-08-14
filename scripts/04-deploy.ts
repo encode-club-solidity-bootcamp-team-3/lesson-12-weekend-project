@@ -19,8 +19,11 @@ function setupProvider() {
 async function main() {
     // Gather inputs
     const TKNaddress = process.env.VTK_ADDRESS ?? "";
-    const targetBlockNum = process.argv[2];
-    const proposals = process.argv.slice(3);
+    // const targetBlockNum = process.argv[2];
+    // const proposals = process.argv.slice(3);
+     const provider = setupProvider();
+    const targetBlockNum = await provider.getBlockNumber();
+    const proposals = process.argv.slice(2);
     console.log(`Deploying Ballot contract at block number ${targetBlockNum}.`);
     console.log("Proposals: ");
     proposals.forEach((element, index) => {
@@ -28,7 +31,7 @@ async function main() {
     });
 
     // Deployment
-    const provider = setupProvider();
+    // const provider = setupProvider();
     const wallet = new ethers.Wallet(process.env.PRIVATE_KEY ?? "", provider);
     const balanceBN = await provider.getBalance(wallet.address);
     const balance = Number(ethers.formatUnits(balanceBN));
